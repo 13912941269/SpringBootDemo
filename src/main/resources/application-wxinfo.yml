@@ -1,0 +1,30 @@
+#appid
+appid: 1
+#秘钥
+appsecret: 2
+#商户号
+partner: 3
+#商户秘钥
+partnerkey: 4
+#支付回调地址
+notifyurl: http://xxq.jiriweb.com/mobile/paymoneysuccess
+#回调域名
+domaninName: http%3A%2F%2Fwx.mubeihealth.com%2Fmobile%2FgetUser
+#登陆跳转地址
+wx.redirect_url: https://open.weixin.qq.com/connect/oauth2/authorize?appid=APPID&redirect_uri=REDIRECTURL&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect
+#获取token_url
+wx.token_url: https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET
+#获取Oauth2AccessToken
+wx.oauth2token_url: https://api.weixin.qq.com/sns/oauth2/access_token?appid=APPID&secret=SECRET&code=CODE&grant_type=authorization_code
+#获取用户信息URL
+wx.userinfo_url: https://api.weixin.qq.com/sns/userinfo?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN
+#获取用户信息-判断是否关注
+wx.usersub_url: https://api.weixin.qq.com/cgi-bin/user/info?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN
+#支付订单创建
+wx.createorder_url: https://api.mch.weixin.qq.com/pay/unifiedorder
+#发红包URL
+wx.redpackage_url: https://api.mch.weixin.qq.com/mmpaymkttransfers/sendredpack
+#模板消息URL
+wx.template_url: https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=ACCESS_TOKEN
+#获取ticket_url
+wx.ticket_url: https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=ACCESS_TOKEN&type=jsapi

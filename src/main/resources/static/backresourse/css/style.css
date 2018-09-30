@@ -1,0 +1,76 @@
+
+.content h4{
+	margin-top: 25px;
+	font-size: 16px;
+	color: #333;
+	font-weight: normal;
+	position: relative;
+	padding-left: 7px;
+	margin-bottom: 18px;
+}
+.content h4 i{
+	display: inline-block;
+	width: 2px;
+	height: 14px;
+	background: #efae7d;
+	position: absolute;
+	top: 4px;
+	left: 0;
+}
+.tt{
+	width: 100%;
+	height: auto;
+	border-collapse:collapse;
+	text-align: center;
+	margin-bottom: 47px;
+}
+.tt thead{
+	color: #333;
+	font-weight: bold;
+	height: 58px;
+	line-height: 58px;
+	background: #f7faff;
+	box-sizing: border-box;
+	border-top: 1px solid #e6e8ed;
+	border-bottom: 1px solid #e6e8ed;
+}
+.tt tbody td{
+	height: 71px;
+	box-sizing: border-box;
+	border-bottom: 3px solid #fff;	
+}
+.tt tbody .odd{background: #f9f9f9;}
+.tt tbody .even{background: #f6f4f4;}
+
+.tt img{
+	width: 55px;
+	height: 55px;
+}
+.operate a:first-child{
+	background: none
+}
+.operate a{
+	display: inline-block;
+	background: url(../images/line.jpg) no-repeat left center;
+	padding: 0 10px;
+}
+.operate a.del{
+	color: #244a82;
+}
+.btn{
+	margin-top: 25px;
+}
+.btn input{
+	width:7%;
+	border:1px solid #888;
+}
+.btn a{
+	padding:0 6px;
+	height: 24px;
+	border-radius: 3px;
+	background: #e57e31;
+	color: #fff;
+	line-height: 24px;
+	display: inline-block;
+	text-align: center;
+}

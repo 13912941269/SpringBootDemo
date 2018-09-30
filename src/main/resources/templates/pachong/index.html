@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>add</title>
+</head>
+<%for(item in list) {%>
+列别-->${item.colum!}
+<hr>
+<%for(itemone in item.bookList) {%>
+<a href="zhangjie?url=${itemone.bookLink}">${itemone.bookName}</a>
+<br/>
+<%}%>
+<hr>
+<%}%>
+</body>
+</html>

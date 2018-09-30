@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>add</title>
+</head>
+title-->${title!}
+<hr>
+auth-->${auth!}
+<hr>
+desc-->${desc!}
+<hr>
+titimg--><img src="${titimg}"/>
+<hr>
+<%for(item in listart) {%>
+    <a href="${item.link}">${item.linktext}</a>
+<%}%>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<div class="pages">
+	<%if(pagebean.pageNum>1){%>
+	<a href="javascript:void(0);" class="prev" onclick="gopage(${pagebean.prePage})">上一页</a>
+	<%}%>
+	<%if(pagebean.pageNum==1){%>
+	<a href="javascript:void(0);" class="prev on">上一页</a>
+	<%}%>
+	<span class="number">
+		<%for(var i=(pagebean.pageNum>4?(pagebean.pageNum+5>pagebean.pages?(pagebean.pages>10?pagebean.pages-9:1):pagebean.pageNum-4):1); i<=(pagebean.pageNum>4?pagebean.pageNum+5>pagebean.pages?pagebean.pages:pagebean.pageNum+5:pagebean.pages>10?10:pagebean.pages); i++){%>
+			<%if(pagebean.pageNum==i){%>
+				<a href="javascript:void(0);" class="on">${i}</a>
+			<%}%>
+
+			<%if(pagebean.pageNum!=i){%>
+				<a href="javascript:void(0);" onclick="gopage(${i})">${i}</a>
+			<%}%>
+		<%}%>
+	</span>
+	<%if(pagebean.pageNum < pagebean.pages){%>
+	<a href="javascript:void(0);" class="next" onclick="gopage(${pagebean.nextPage})">下一页</a>
+	<%}%>
+	<%if(pagebean.pageNum==pagebean.pages){%>
+	<a href="javascript:void(0);" class="prev on">下一页</a>
+	<%}%>
+</div>
+<script>
+    function gopage(pageNum){
+        $("#pageForm").append('<input type="hidden" value="'+pageNum+'" name="pageNum"/>');
+        $("#pageForm").submit();
+    }
+</script>

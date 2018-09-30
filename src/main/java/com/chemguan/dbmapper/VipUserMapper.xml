@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.chemguan.dbmapper.VipUserMapper" >
+  <resultMap id="BaseResultMap" type="com.chemguan.model.VipUser" >
+    <id column="userid" property="userid" jdbcType="INTEGER" />
+    <result column="openid" property="openid" jdbcType="VARCHAR" />
+    <result column="staffid" property="staffid" jdbcType="VARCHAR" />
+    <result column="staffname" property="staffname" jdbcType="VARCHAR" />
+    <result column="department" property="department" jdbcType="VARCHAR" />
+    <result column="position" property="position" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="gender" property="gender" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="avatar" property="avatar" jdbcType="VARCHAR" />
+    <result column="addtime" property="addtime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    userid, openid, staffid, staffname, department, position, mobile, gender, email, 
+    avatar, addtime
+  </sql>
+
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from vipuser
+    where userid = #{userid,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectAllUser" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from vipuser
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from vipuser
+    where userid = #{userid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.chemguan.model.VipUser" >
+    insert into vipuser (userid, openid, staffid, 
+      staffname, department, position, 
+      mobile, gender, email, 
+      avatar, addtime)
+    values (#{userid,jdbcType=INTEGER}, #{openid,jdbcType=VARCHAR}, #{staffid,jdbcType=VARCHAR}, 
+      #{staffname,jdbcType=VARCHAR}, #{department,jdbcType=VARCHAR}, #{position,jdbcType=VARCHAR}, 
+      #{mobile,jdbcType=VARCHAR}, #{gender,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+      #{avatar,jdbcType=VARCHAR}, #{addtime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.chemguan.model.VipUser" >
+    insert into vipuser
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userid != null" >
+        userid,
+      </if>
+      <if test="openid != null" >
+        openid,
+      </if>
+      <if test="staffid != null" >
+        staffid,
+      </if>
+      <if test="staffname != null" >
+        staffname,
+      </if>
+      <if test="department != null" >
+        department,
+      </if>
+      <if test="position != null" >
+        position,
+      </if>
+      <if test="mobile != null" >
+        mobile,
+      </if>
+      <if test="gender != null" >
+        gender,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="avatar != null" >
+        avatar,
+      </if>
+      <if test="addtime != null" >
+        addtime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userid != null" >
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="openid != null" >
+        #{openid,jdbcType=VARCHAR},
+      </if>
+      <if test="staffid != null" >
+        #{staffid,jdbcType=VARCHAR},
+      </if>
+      <if test="staffname != null" >
+        #{staffname,jdbcType=VARCHAR},
+      </if>
+      <if test="department != null" >
+        #{department,jdbcType=VARCHAR},
+      </if>
+      <if test="position != null" >
+        #{position,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null" >
+        #{gender,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="avatar != null" >
+        #{avatar,jdbcType=VARCHAR},
+      </if>
+      <if test="addtime != null" >
+        #{addtime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.chemguan.model.VipUser" >
+    update vipuser
+    <set >
+      <if test="openid != null" >
+        openid = #{openid,jdbcType=VARCHAR},
+      </if>
+      <if test="staffid != null" >
+        staffid = #{staffid,jdbcType=VARCHAR},
+      </if>
+      <if test="staffname != null" >
+        staffname = #{staffname,jdbcType=VARCHAR},
+      </if>
+      <if test="department != null" >
+        department = #{department,jdbcType=VARCHAR},
+      </if>
+      <if test="position != null" >
+        position = #{position,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null" >
+        gender = #{gender,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="avatar != null" >
+        avatar = #{avatar,jdbcType=VARCHAR},
+      </if>
+      <if test="addtime != null" >
+        addtime = #{addtime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where userid = #{userid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.chemguan.model.VipUser" >
+    update vipuser
+    set openid = #{openid,jdbcType=VARCHAR},
+      staffid = #{staffid,jdbcType=VARCHAR},
+      staffname = #{staffname,jdbcType=VARCHAR},
+      department = #{department,jdbcType=VARCHAR},
+      position = #{position,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      gender = #{gender,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      avatar = #{avatar,jdbcType=VARCHAR},
+      addtime = #{addtime,jdbcType=TIMESTAMP}
+    where userid = #{userid,jdbcType=INTEGER}
+  </update>
+</mapper>

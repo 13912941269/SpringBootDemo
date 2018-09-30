@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.chemguan.dbmapper.BackGroundLoginDao">
+	
+	<select id="selectAllBgUser" resultType="com.chemguan.model.BackGroundLogin">
+		select * from backgroundlogin ORDER BY id DESC
+	</select>
+
+
+
+	<delete id="deleteBgUserById">
+		delete from backgroundlogin where id=#{id}
+    </delete>
+
+
+
+	<select id="loginback" resultType="com.chemguan.model.BackGroundLogin">
+		select * from backgroundlogin where 1=1
+		<if test="username != null">
+			and username = #{username}  
+        </if>
+		<if test="password != null">
+			and password = #{password} 
+        </if>
+	</select>
+
+
+	<insert id="insertBgUser">
+		insert into backgroundlogin(username,password)
+		values(#{username},#{password})
+	</insert>
+
+
+	<select id="checkbgusername" resultType="com.chemguan.model.BackGroundLogin">
+		select * from backgroundlogin where username=#{username}
+	</select>
+
+
+
+	<select id="selectBgUserById" resultType="com.chemguan.model.BackGroundLogin">
+		select * from backgroundlogin where id=#{id}
+	</select>
+
+
+	<update id="updateBgUser">
+		update backgroundlogin
+		<set >
+			<if test="username != null" >
+				username = #{username,jdbcType=VARCHAR},
+			</if>
+
+			<if test="password != null" >
+				password = #{password,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+    </update>
+</mapper>

@@ -1,0 +1,46 @@
+<html>
+    <head>  
+       <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="Author" content="">
+    <meta content="" name="design">
+    <title>支付</title>
+      	<script type="text/javascript" src="${ctxPath}/static/manager/js/jquery-1.9.1.min.js"></script>
+    </head>
+    <body>
+    <input type="hidden" id="appid"  value="${appid}"/>
+    <input type="hidden" id="timeStamp"  value="${timeStamp}"/>
+    <input type="hidden" id="nonceStr"  value="${nonceStr}"/>
+    <input type="hidden" id="package"  value="${package}"/>
+    <input type="hidden" id="sign"  value="${sign}"/>
+
+    <!-- 最外边框 -->
+    <div style="margin: 20px auto; border: 1px solid blue; width: 300px; height: 500px;">
+        <div id="msg" style="width: 100%; height: 70%; border: 1px solid yellow;overflow: auto;"></div>
+        <textarea id="tx" style="width: 100%; height: 20%;">${ErrorMsg}</textarea>
+        <button onclick="gopaymoney()" style="width: 100%; height: 8%;">发送数据</button>
+    </div>
+
+        <script type="text/javascript">
+            function gopaymoney(){
+                WeixinJSBridge.invoke('getBrandWCPayRequest',{
+                    "appId" : $("#appid").val(),
+                    "timeStamp" : $("#timeStamp").val(),
+                    "nonceStr" : $("#nonceStr").val(),
+                    "package" : $("#packagex").val(),
+                    "signType" : "MD5",
+                    "paySign" : $("#sign").val()
+                },function(res){
+                    WeixinJSBridge.log(res.err_msg);
+                    if(res.err_msg == "get_brand_wcpay_request:ok"){
+                        alert("微信支付成功!");
+                    }else if(res.err_msg == "get_brand_wcpay_request:cancel"){
+                        alert("用户取消支付!");
+                    }else{
+                        alert("支付失败!"+res.err_msg);
+                    }
+                });
+            }
+        </script>
+    </body>
+</html>  

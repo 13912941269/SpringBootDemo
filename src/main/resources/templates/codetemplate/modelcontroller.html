@@ -1,0 +1,27 @@
+package ${basePackage}.modelcontroller;
+
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+
+/**
+* Created by ${author} on ${date()}.
+*/
+@Controller
+@RequestMapping("${table.mappingPath}")
+public class ${table.entityName}ModelController {
+
+
+    @RequestMapping("findall")
+    public ModelAndView findall() {
+        return new ModelAndView("manager/${table.entityNameLowcase}findall");
+    }
+
+
+    @RequestMapping("modify")
+    public ModelAndView add() {
+        return new ModelAndView("manager/${table.entityNameLowcase}modify");
+    }
+
+}
