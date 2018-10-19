@@ -3,7 +3,7 @@ package com.chemguan.business.dbutil.result;
 import lombok.Getter;
 
 /**
- * Created by gaowenfeng on 2017/8/10.
+ * Created by sw on 18/10/8.
  */
 @Getter
 public enum ResultEnum {

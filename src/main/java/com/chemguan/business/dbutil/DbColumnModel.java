@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * Created by lcy on 17/7/5.
+ * Created by sw on 18/10/8.
  */
 @Data
 public class DbColumnModel implements Serializable {

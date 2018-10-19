@@ -9,7 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 * Created by ${author} on ${date()}.
 */
 @Controller
-@RequestMapping("${table.mappingPath}")
+@RequestMapping("manager${table.mappingPath}")
 public class ${table.entityName}ModelController {
 
 
@@ -17,11 +17,4 @@ public class ${table.entityName}ModelController {
     public ModelAndView findall() {
         return new ModelAndView("manager/${table.entityNameLowcase}findall");
     }
-
-
-    @RequestMapping("modify")
-    public ModelAndView add() {
-        return new ModelAndView("manager/${table.entityNameLowcase}modify");
-    }
-
 }

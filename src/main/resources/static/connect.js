@@ -23,6 +23,7 @@ function connect() {
                     for(var s = 0; s < list[i].listColum.length; s++){
                         var obj=list[i].listColum[s];
                         str += obj.colName+':<input type="checkbox" name="'+list[i].tableName+'colum" value="' + obj.colName + '">';
+                        str +='('+obj.precision+')'
                     }
 
                 }

@@ -1,6 +1,7 @@
 package com.chemguan.util;
 
 import org.beetl.core.Configuration;
+import org.beetl.core.Function;
 import org.beetl.core.GroupTemplate;
 import org.beetl.core.Template;
 import org.beetl.core.resource.ClasspathResourceLoader;
@@ -156,6 +157,16 @@ public class Tools{
 
 	public static String getTimeStamp() {
 		return String.valueOf(System.currentTimeMillis() / 1000);
+	}
+
+	
+	public static Boolean checkContain(String str,String containStr) {
+		System.out.println("111");
+		Boolean type=true;
+		if(!str.contains(containStr)){
+			type=false;
+		}
+		return type;
 	}
 
 	public static void main(String[] args) throws IOException {

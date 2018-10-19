@@ -24,7 +24,7 @@ import java.util.*;
 
 
 /**
- * Created by lcy on 17/6/28.
+ * Created by sw on 18/10/8.
  */
 @Service
 @Transactional(readOnly = true, propagation = Propagation.NOT_SUPPORTED)
@@ -32,9 +32,9 @@ import java.util.*;
 public class CodeServiceImpl implements CodeService {
     private static final long serialVersionUID = -3827321264317955429L;
 
-    private static final String projectBasePath="E:\\IdeaProject\\AutoCode\\src\\main\\java";
+    private static final String projectBasePath="E:\\IdeaProject\\AutoCodeFrame\\src\\main\\java";
 
-    private static final String templateBasePath="E:\\IdeaProject\\AutoCode\\src\\main\\resources\\templates";
+    private static final String templateBasePath="E:\\IdeaProject\\AutoCodeFrame\\src\\main\\resources\\templates";
 
     @Autowired
     private FamilyDbUtils familyDbUtils;
@@ -132,7 +132,6 @@ public class CodeServiceImpl implements CodeService {
                     if(columName!=null){
                         for(int i=0;i<columName.length;i++){
                             if(columName[i].equals(model.getColName())){
-                                System.out.println("111");
                                 model.setChoose(true);
                             }
                         }
@@ -213,7 +212,7 @@ public class CodeServiceImpl implements CodeService {
             templateRoot.put("ctxPath","${ctxPath}");
             templateRoot.put("includetop","<%layout(\"include/top.html\"){}%>");
             templateRoot.put("includeleft","<%layout(\"include/left.html\"){}%>");
-            templateRoot.put("pageview","<%layout(\"include/pageview.html\"){}%>");
+            templateRoot.put("pageview","<%layout(\"include/pageviewnow.html\"){}%>");
 
             String newPath = dirPath;
 
@@ -235,7 +234,7 @@ public class CodeServiceImpl implements CodeService {
 
             this.generateEntityModel(viewPath, dbTableModel, templateRoot, "findall");
 
-            this.generateEntityModel(viewPath, dbTableModel, templateRoot, "modify");
+            //this.generateEntityModel(viewPath, dbTableModel, templateRoot, "modify");
         }
     }
 
@@ -300,7 +299,7 @@ public class CodeServiceImpl implements CodeService {
         else if (suffix.equals("Mapper"))
             file = new File(dirPath + File.separator + suffix.toLowerCase() +
                     File.separator + dbTableModel.getEntityName() + suffix + ".xml");
-        else if (suffix.equals("findall")||suffix.equals("modify"))
+        else if (suffix.equals("findall"))
             file = new File(dirPath + File.separator +
                     dbTableModel.getEntityNameLowcase() +suffix.toLowerCase() + ".html");
         else

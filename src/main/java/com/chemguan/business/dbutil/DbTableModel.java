@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * Created by lcy on 17/7/5.
+ * Created by sw on 18/10/8.
  * 表模型
  */
 @Data

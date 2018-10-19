@@ -1,7 +1,7 @@
 package com.chemguan.business.dbutil;
 
 /**
- * Created by lcy on 17/7/4.
+ * Created by sw on 18/10/8.
  *
  * 数据库模型
  */

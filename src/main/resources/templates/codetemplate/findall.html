@@ -6,11 +6,24 @@
     <meta name="Author" content="">
     <meta content="" name="design">
     <title>列表查询</title>
+    <link rel="stylesheet" href="${ctxPath}/backresourse/css/pagination.css"/>
     <link rel="stylesheet" href="${ctxPath}/backresourse/css/base.css"/>
     <link rel="stylesheet" type="text/css" href="${ctxPath}/backresourse/css/style.css"/>
     <script type="text/javascript" src="${ctxPath}/backresourse/js/jquery-1.9.1.min.js"></script>
     <script type="text/javascript" src="${ctxPath}/backresourse/js/base.js"></script>
     <script type="text/javascript" src="${ctxPath}/backresourse/js/html5shiv.v3.72.min.js"></script>
+    <script type="text/javascript" src="${ctxPath}/backresourse/js/pagination.js"></script>
+    <script type="text/javascript" src="${ctxPath}/backresourse/js/vue.min.js"></script>
+    <script type="text/javascript" src="${ctxPath}/backresourse/js/vue-resource.min.js"></script>
+    <script type="text/javascript" src="${ctxPath}/backresourse/js/imgutil.js"></script>
+    <%var checktype=0;%>
+    <%for(item in table.columnModels){%>
+    <%if(strutil.toLowerCase(item.typeName)=="text"){checktype=1;}%>
+    <%}%>
+    <%if(checktype==1){%>
+    <script charset="utf-8" src="${ctxPath}/kindeditor-4.1.10/kindeditor.js"></script>
+    <style>.weui_btn_dialog.default{display: none;}</style>
+    <%}%>
 </head>
 <body>
 <!--头部 开始-->
@@ -21,43 +34,93 @@ ${includetop}
     <div class="content">
         <h4>列表查询<i></i></h4>
         <div class="btn">
-            <a href="insertbguserjsp">新增信息</a>
+            <a href="javascript:void(0)" @click="modify()">新增信息</a>
         </div>
 
         <table class="tt">
             <thead>
             <tr>
                 <%for(item in table.columnModels){%>
-                <th width="${(itemLP.size+1)/100}%">${item.remarks}</th>
+                <%if(!item.isKey&&strutil.toLowerCase(item.typeName)!="text"){%>
+                <th width="${100/(itemLP.size+1)}%">${item.remarks}</th>
                 <%}%>
-                <th width="10%">操作</th>
+                <%}%>
+                <th width="${100/(table.columnModels.~size+1)}%">操作</th>
             </tr>
             </thead>
 
-            <tbody>
-            <tr>
-                <td></td>
-                <td class="operate"></td>
+            <tbody id="contextdetail">
+
+            <tr v-if="list.length==0">
+                <td colspan="7">暂无数据</td>
+            </tr>
+
+            <tr v-for="(item,index) in list">
+                <%for(item in table.columnModels){%>
+                <%if(!item.isKey&&strutil.toLowerCase(item.typeName)!="text"){%>
+                <%if(item.javaType=="Date"){%>
+                <td>{{item.${item.columnNameLowerCamel}|datafmt('yyyy-MM-dd')}}</td>
+                <%}else if(strutil.contain(strutil.toLowerCase(item.columnNameLowerCamel),"img")){%>
+                <td><img :src="'${ctxPath}/projectimg/'+item.${item.columnNameLowerCamel}"/></td>
+                <%}else{%>
+                <td>{{ item.${item.columnNameLowerCamel} }}</td>
+                <%}%>
+                <%}%>
+                <%}%>
+                <td>
+                    <a class="del" href="javascript:void(0)" @click="modify(item.${table.columnModels[0].columnNameLowerCamel})">编辑</a>
+                    <a class="del" href="javascript:void(0)" @click="deldata(item.${table.columnModels[0].columnNameLowerCamel})" >删除</a>
+                </td>
             </tr>
             </tbody>
         </table>
-        <!--分页-->
-        ${pageview}
-        <form action="${ctxPath}/${table.mappingPath}/findall"  id="pageForm" method="post">
-        </form>
-        <!--分页-->
+
     </div>
+    <!--分页-->
+    ${pageview}
 </div>
 
-<!--底部 开始-->
 
-<!--底部 结束-->
+
+<!--添加修改弹框-->
+<div v-if="diglogshow" class="diglog">
+    <div class="diglog-child">
+        <div style="text-align: right" @click="dighide"><img src="${ctxPath}/backresourse/images/close_2.png" alt=""></div>
+        <%for(item in table.columnModels){%>
+
+        <%if(!item.isKey){%>
+
+        <%if(item.javaType=="Date"){%>
+        <p class="p2"><span>${item.remarks}</span><input type="text" v-model="obj.${item.columnNameLowerCamel}"/></p>
+        <%}else if(item.javaType=="Integer"){%>
+        <p class="p2"><span>${item.remarks}</span><input type="number" v-model.number="obj.${item.columnNameLowerCamel}"/></p>
+        <%}else if(strutil.toLowerCase(item.typeName)=="text"){%>
+        <p class="p6"><span>详情</span>
+        <div class="fuwenben">
+            <textarea class="richtext" id="${item.columnNameLowerCamel}" v-model="obj.${item.columnNameLowerCamel}"></textarea>
+        </div>
+        </p>
+        <%}else if(strutil.contain(strutil.toLowerCase(item.columnNameLowerCamel),"img")){%>
+        <p class="p2"><span>${item.remarks}</span>
+            <input type="file" id="${item.columnNameLowerCamel}data" onchange="uploadBtnChange('${item.columnNameLowerCamel}data','${item.columnNameLowerCamel}val','${item.columnNameLowerCamel}img','${ctxPath}')"/>
+            <input type="hidden" id="${item.columnNameLowerCamel}val">
+            <img style="width: 100px;" id="${item.columnNameLowerCamel}img">
+        </p>
+        <%}else{%>
+        <p class="p2"><span>${item.remarks}</span><input type="text" v-model="obj.${item.columnNameLowerCamel}"/></p>
+        <%}%>
+        <%}%>
+        <%}%>
+        <div class="clear"></div>
+        <button class="btn" @click="commit(obj.${table.columnModels[0].columnNameLowerCamel})">
+            <a href="javascript:void(0)">提交</a>
+        </button>
+    </div>
+</div>
+<!--添加修改弹框-->
 
 <script type="text/javascript">
     $(function () {
-        $(".tt tbody").find("tr").each(function(){
-            $(this).index()%2!==0?$(this).addClass('even'):$(this).addClass('odd');
-        })
         $("#${table.entityNameLowcase}").addClass('on');
         $("#${table.entityNameLowcase}x").addClass('on');
         $("#${table.entityNameLowcase}xx").css("display","block");
@@ -68,6 +131,64 @@ ${includetop}
         $(".left-menu2").css("display","none");
         $(".content").css("margin-left","208px");
     });
+</script>
+<script type="text/javascript" src="${ctxPath}/backresourse/js/pagejsutil.js"></script>
+<script type="text/javascript">
+    function commitckeck(){
+        <%for(item in table.columnModels){%>
+        <%if(strutil.contain(strutil.toLowerCase(item.columnNameLowerCamel),"img")){%>
+        if(${item.columnNameLowerCamel}val!=""){
+            dig.obj.${item.columnNameLowerCamel}=$("#${item.columnNameLowerCamel}val").val();
+        }
+        <%}%>
+        <%if(strutil.toLowerCase(item.typeName)=="varchar"){%>
+        if(dig.obj.${item.columnNameLowerCamel}!=null&&dig.obj.${item.columnNameLowerCamel}.length>${item.precision}){
+            alert('${item.remarks}不得超过${item.precision}个字符');
+            return false;
+        }
+        <%}%>
+        <%if(item.javaType=="Date"){%>
+        if(dig.obj.${item.columnNameLowerCamel}!=null){
+            dig.obj.${item.columnNameLowerCamel}=new Date(dig.obj.${item.columnNameLowerCamel});
+        }else{
+            dig.obj.${item.columnNameLowerCamel}=datefmt(new Date(),"yyyy-MM-dd");
+        }
+        <%}%>
+        <%}%>
+        <%for(item in table.columnModels){%>
+        <%if(strutil.toLowerCase(item.typeName)=="text"){%>
+        dig.obj.${item.columnNameLowerCamel}=$("#${item.columnNameLowerCamel}").val();
+        <%}%>
+        <%}%>
+        return true;
+    }
+
+    function ckeckrepit(){
+        return true;
+    }
+    vm.getpath="${ctxPath}${table.mappingPath}";
+    vm.gopage();
+
+
+    function initfwb(){
+    <%if(checktype==1){%>
+        KindEditor.create('.richtext', {
+            allowFileManager : true,
+            autoHeightMode : false ,
+            height : "500px",
+            width:"100%",
+            themeType:'common',
+            uploadJson :'${ctxPath}/Kindeditor/uploadFile',
+            fileManagerJson : '${ctxPath}/Kindeditor/fileManager',
+            afterCreate : function() {
+                this.loadPlugin('autoheight');
+            },
+            afterBlur:function(){
+                this.sync()
+            }
+        });
+    <%}%>
+    }
 </script>
 </body>
 </html>
