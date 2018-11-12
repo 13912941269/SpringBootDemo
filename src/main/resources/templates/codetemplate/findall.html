@@ -16,7 +16,7 @@
     <script type="text/javascript" src="${ctxPath}/backresourse/js/vue.min.js"></script>
     <script type="text/javascript" src="${ctxPath}/backresourse/js/vue-resource.min.js"></script>
     <script type="text/javascript" src="${ctxPath}/backresourse/js/imgutil.js"></script>
-    <%var checktype=0;%>
+    <%var checktype=0;var searchtype=0;%>
     <%for(item in table.columnModels){%>
     <%if(strutil.toLowerCase(item.typeName)=="text"){checktype=1;}%>
     <%}%>
@@ -35,6 +35,17 @@ ${includetop}
         <h4>列表查询<i></i></h4>
         <div class="btn">
             <a href="javascript:void(0)" @click="modify()">新增信息</a>
+
+            <%for(item in table.columnModels){%>
+            <%if(item.isChoose){%>
+            <%searchtype=1;%>
+            ${item.remarks}:<input type="text" id="${item.columnNameLowerCamel}">
+            <%}%>
+            <%}%>
+
+            <%if(searchtype==1){%>
+            <a href="javascript:void(0)" @click="search()">查询</a>
+            <%}%>
         </div>
 
         <table class="tt">
@@ -52,7 +63,7 @@ ${includetop}
             <tbody id="contextdetail">
 
             <tr v-if="list.length==0">
-                <td colspan="7">暂无数据</td>
+                <td colspan="20">暂无数据</td>
             </tr>
 
             <tr v-for="(item,index) in list">
@@ -61,7 +72,7 @@ ${includetop}
                 <%if(item.javaType=="Date"){%>
                 <td>{{item.${item.columnNameLowerCamel}|datafmt('yyyy-MM-dd')}}</td>
                 <%}else if(strutil.contain(strutil.toLowerCase(item.columnNameLowerCamel),"img")){%>
-                <td><img :src="'${ctxPath}/projectimg/'+item.${item.columnNameLowerCamel}"/></td>
+                <td><img v-if="item.${item.columnNameLowerCamel}!=null&&item.${item.columnNameLowerCamel}!=''" :src="'${ctxPath}/projectimg/'+item.${item.columnNameLowerCamel}"/></td>
                 <%}else{%>
                 <td>{{ item.${item.columnNameLowerCamel} }}</td>
                 <%}%>
@@ -121,11 +132,11 @@ ${includetop}
 
 <script type="text/javascript">
     $(function () {
+        $("#${strutil.split(table.tableName,"_")[0]}").addClass('on');
         $("#${table.entityNameLowcase}").addClass('on');
-        $("#${table.entityNameLowcase}x").addClass('on');
-        $("#${table.entityNameLowcase}xx").css("display","block");
+        $("#${strutil.split(table.tableName,"_")[0]}xx").css("display","block");
         $(".sidebar").css("width","189px");
-        var temp=$("#${table.entityNameLowcase}x").find('ul').html();
+        var temp=$("#${table.entityNameLowcase}").find('ul').html();
         $(".left-menu2").find('h5').html("findall");
         $(".left-menu2").find('ul').html(temp);
         $(".left-menu2").css("display","none");
@@ -137,7 +148,7 @@ ${includetop}
     function commitckeck(){
         <%for(item in table.columnModels){%>
         <%if(strutil.contain(strutil.toLowerCase(item.columnNameLowerCamel),"img")){%>
-        if(${item.columnNameLowerCamel}val!=""){
+        if($("#${item.columnNameLowerCamel}val").val()!=""){
             dig.obj.${item.columnNameLowerCamel}=$("#${item.columnNameLowerCamel}val").val();
         }
         <%}%>
@@ -149,9 +160,9 @@ ${includetop}
         <%}%>
         <%if(item.javaType=="Date"){%>
         if(dig.obj.${item.columnNameLowerCamel}!=null){
-            dig.obj.${item.columnNameLowerCamel}=new Date(dig.obj.${item.columnNameLowerCamel});
+            dig.obj.${item.columnNameLowerCamel}=datefmt(dig.obj.${item.columnNameLowerCamel},"yyyy-MM-dd HH:mm:ss");
         }else{
-            dig.obj.${item.columnNameLowerCamel}=datefmt(new Date(),"yyyy-MM-dd");
+            dig.obj.${item.columnNameLowerCamel}=datefmt(new Date(),"yyyy-MM-dd HH:mm:ss");
         }
         <%}%>
         <%}%>
@@ -169,6 +180,22 @@ ${includetop}
     vm.getpath="${ctxPath}${table.mappingPath}";
     vm.gopage();
 
+
+
+    <%if(searchtype==1){%>
+    function search(){
+        vm.param='';
+        <%for(item in table.columnModels){%>
+        <%if(item.isChoose){%>
+        var ${item.columnNameLowerCamel}=$("#${item.columnNameLowerCamel}").val();
+        if(${item.columnNameLowerCamel}!=''){
+            vm.param+="&${item.columnNameLowerCamel}="+${item.columnNameLowerCamel};
+        }
+        <%}%>
+        <%}%>
+        vm.gopage();
+    }
+    <%}%>
 
     function initfwb(){
     <%if(checktype==1){%>

@@ -14,8 +14,12 @@ import io.swagger.annotations.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
-* Created with ${author} on ${date()}.
-*/
+ * @Title: ${table.entityName}
+ * @ProjectName
+ * @Description: TODO
+ * @author ${author}
+ * @date ${date()}
+ */
 @Entity
 @Data
 @Table(name = "${table.tableName}")
@@ -25,14 +29,9 @@ public class ${table.entityName}  implements Serializable{
 
     <%for(item in table.columnModels){%>
     /** ${item.remarks} */
-    <%if(item.isKey){%>
-    @Id
-    <%}%>
-
+    <%if(item.isKey){%>@Id<%}%>
     @ApiModelProperty(value = "${item.remarks}")
-    <%if(item.javaType=="Date"){%>
-    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
-    <%}%>
+    <%if(item.javaType=="Date"){%>@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")<%}%>
     private ${item.javaType} ${item.columnNameLowerCamel};
     <%}%>
 

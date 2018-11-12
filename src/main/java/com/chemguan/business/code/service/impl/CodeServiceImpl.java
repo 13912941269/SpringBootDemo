@@ -32,9 +32,9 @@ import java.util.*;
 public class CodeServiceImpl implements CodeService {
     private static final long serialVersionUID = -3827321264317955429L;
 
-    private static final String projectBasePath="E:\\IdeaProject\\AutoCodeFrame\\src\\main\\java";
+    private static final String projectBasePath="E:\\IdeaProject\\dtbank\\src\\main\\java";
 
-    private static final String templateBasePath="E:\\IdeaProject\\AutoCodeFrame\\src\\main\\resources\\templates";
+    private static final String templateBasePath="E:\\IdeaProject\\dtbank\\src\\main\\resources\\templates";
 
     @Autowired
     private FamilyDbUtils familyDbUtils;

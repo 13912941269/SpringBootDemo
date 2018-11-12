@@ -1,19 +1,24 @@
 package ${basePackage}.modelcontroller;
 
-
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
-* Created by ${author} on ${date()}.
-*/
+ * @Title: ${table.entityName}ModelController
+ * @ProjectName
+ * @Description: TODO
+ * @author ${author}
+ * @date ${date()}
+ */
 @Controller
 @RequestMapping("manager${table.mappingPath}")
 public class ${table.entityName}ModelController {
 
 
-    @RequestMapping("findall")
+    @RequiresPermissions("bg:${strutil.toLowerCase(table.entityName)}")
+    @GetMapping
     public ModelAndView findall() {
         return new ModelAndView("manager/${table.entityNameLowcase}findall");
     }
