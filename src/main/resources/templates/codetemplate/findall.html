@@ -15,7 +15,13 @@
     <script type="text/javascript" src="${ctxPath}/backresourse/js/pagination.js"></script>
     <script type="text/javascript" src="${ctxPath}/backresourse/js/vue.min.js"></script>
     <script type="text/javascript" src="${ctxPath}/backresourse/js/vue-resource.min.js"></script>
+    <%var imgtype=0;%>
+    <%for(item in table.columnModels){%>
+    <%if(strutil.contain(strutil.toLowerCase(item.columnNameLowerCamel),"img")){imgtype=1;}%>
+    <%}%>
+    <%if(imgtype==1){%>
     <script type="text/javascript" src="${ctxPath}/backresourse/js/imgutil.js"></script>
+    <%}%>
     <%var checktype=0;var searchtype=0;%>
     <%for(item in table.columnModels){%>
     <%if(strutil.toLowerCase(item.typeName)=="text"){checktype=1;}%>
@@ -160,9 +166,7 @@ ${includetop}
         <%}%>
         <%if(item.javaType=="Date"){%>
         if(dig.obj.${item.columnNameLowerCamel}!=null){
-            dig.obj.${item.columnNameLowerCamel}=datefmt(dig.obj.${item.columnNameLowerCamel},"yyyy-MM-dd HH:mm:ss");
-        }else{
-            dig.obj.${item.columnNameLowerCamel}=datefmt(new Date(),"yyyy-MM-dd HH:mm:ss");
+            dig.obj.${item.columnNameLowerCamel}=new Date(dig.obj.${item.columnNameLowerCamel});
         }
         <%}%>
         <%}%>
@@ -199,6 +203,12 @@ ${includetop}
 
     function initfwb(){
     <%if(checktype==1){%>
+        <%for(item in table.columnModels){%>
+        <%if(strutil.toLowerCase(item.typeName)=="text"){%>
+            $("#${item.columnNameLowerCamel}").val(dig.obj.${item.columnNameLowerCamel});
+        <%}%>
+        <%}%>
+
         KindEditor.create('.richtext', {
             allowFileManager : true,
             autoHeightMode : false ,

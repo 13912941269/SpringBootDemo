@@ -58,10 +58,7 @@ public class ${table.entityName}Controller {
 
     @GetMapping
     @ApiOperation("${table.entityName}分页查询列表")
-    public Result list(<%for(item in table.columnModels){%>
-                        <%if(item.isChoose){%>
-                        @ApiParam(value = "${item.remarks}")@RequestParam(name = "${item.columnNameLowerCamel}",defaultValue = "") ${item.javaType} ${item.columnNameLowerCamel},
-                        <%}}%>
+    public Result list(<%for(item in table.columnModels){%><%if(item.isChoose){%>@ApiParam(value = "${item.remarks}")@RequestParam(name = "${item.columnNameLowerCamel}",defaultValue = "") ${item.javaType} ${item.columnNameLowerCamel},<%}}%>
                         @ApiParam(value = "页数")@RequestParam(name = "page",defaultValue = "1") Integer page,
                         @ApiParam(value = "每页行数")@RequestParam(name = "size",defaultValue = "10") Integer size) {
         PageHelper.startPage(page, size);

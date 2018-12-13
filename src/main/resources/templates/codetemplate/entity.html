@@ -29,9 +29,13 @@ public class ${table.entityName}  implements Serializable{
 
     <%for(item in table.columnModels){%>
     /** ${item.remarks} */
-    <%if(item.isKey){%>@Id<%}%>
+    <%if(item.isKey){%>
+    @Id
+    <%}%>
     @ApiModelProperty(value = "${item.remarks}")
-    <%if(item.javaType=="Date"){%>@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")<%}%>
+    <%if(item.javaType=="Date"){%>
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    <%}%>
     private ${item.javaType} ${item.columnNameLowerCamel};
     <%}%>
 
