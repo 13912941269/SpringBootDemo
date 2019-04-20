@@ -1,5 +1,9 @@
 package com.chemguan.util;
 
+import org.apache.ibatis.mapping.Environment;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.transaction.TransactionFactory;
+import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
 import org.beetl.core.Configuration;
 import org.beetl.core.Function;
 import org.beetl.core.GroupTemplate;
@@ -9,10 +13,14 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -170,18 +178,29 @@ public class Tools{
 	}
 
 	public static void main(String[] args) throws IOException {
-		/*SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		try {
-			System.out.println(surplusdays(sdf.parse("2009-01-11"),sdf.parse("2009-01-12")));
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}*/
-		ClasspathResourceLoader resourceLoader = new ClasspathResourceLoader("templates/codetemplate/");
+		/*ClasspathResourceLoader resourceLoader = new ClasspathResourceLoader("templates/codetemplate/");
 		Configuration cfg = Configuration.defaultConfiguration();
 		GroupTemplate gt = new GroupTemplate(resourceLoader, cfg);
 		Template temp = gt.getTemplate("service.html");
-		System.out.println(temp.render());
+		System.out.println(temp.render());*/
+		/*String url="jdbc:mysql://192.168.1.10:3306/xuexin";
+		String username="root";
+		String password="123456";
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con= DriverManager.getConnection(url,username,password);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}*/
 
+		/*DataSource dataSource = BlogDataSourceFactory.getBlogDataSource();
+		TransactionFactory transactionFactory = new JdbcTransactionFactory();
+		Environment environment = new Environment("development", transactionFactory, dataSource);
+		Configuration configuration = new Configuration(environment);
+		configuration.addMapper(BlogMapper.class);
+		SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(configuration);*/
 
 	}
 }

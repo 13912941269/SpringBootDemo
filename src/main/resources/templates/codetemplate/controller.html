@@ -6,11 +6,12 @@ import ${basePackage}.service.${table.entityName}Service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.annotations.*;
 import tk.mybatis.mapper.entity.Condition;
 import tk.mybatis.mapper.entity.Example;
-
+import org.apache.commons.lang.StringUtils;
 import java.util.List;
 
 /**
@@ -26,6 +27,7 @@ public class ${table.entityName}Controller {
     @Autowired
     private ${table.entityName}Service ${table.entityName}Service;
 
+    @RequiresPermissions("bg:${strutil.toLowerCase(table.entityName)}")
     @PostMapping
     @ApiOperation("添加${table.entityName}")
     public Result add(${table.entityName} ${table.entityName}) {
@@ -33,13 +35,30 @@ public class ${table.entityName}Controller {
         return ResultGenerator.genSuccessResult();
     }
 
-    @DeleteMapping("/{id:\\d+}")
-    @ApiOperation("删除${table.entityName}")
-    public Result delete(@ApiParam(value = "${table.remarks}id") @PathVariable  Integer id) {
-        ${table.entityName}Service.deleteById(id);
+
+
+    /**
+    * 批量删除
+    * @param checkIds
+    * @return
+    */
+    @RequiresPermissions("bg:${strutil.toLowerCase(table.entityName)}")
+    @GetMapping("delpl")
+    public Result delpl(String checkIds) {
+        if(StringUtils.isEmpty(checkIds)){
+            return ResultGenerator.genFailResult("数据为空!");
+        }
+        try{
+            ${table.entityName}Service.deleteByIds(checkIds);
+        }catch (Exception e){
+            return ResultGenerator.genFailResult("所选数据已被关联无法删除");
+        }
         return ResultGenerator.genSuccessResult();
     }
 
+
+
+    @RequiresPermissions("bg:${strutil.toLowerCase(table.entityName)}")
     @PutMapping("/{id:\\d+}")
     @ApiOperation("修改${table.entityName}")
     public Result update(${table.entityName} ${table.entityName}) {
@@ -47,6 +66,7 @@ public class ${table.entityName}Controller {
         return ResultGenerator.genSuccessResult();
     }
 
+    @RequiresPermissions("bg:${strutil.toLowerCase(table.entityName)}")
     @GetMapping("/{id:\\d+}")
     @ApiOperation("${table.entityName}根据id查询详情")
     public Result detail(@ApiParam(value = "${table.remarks}id")@PathVariable Integer id) {
@@ -55,7 +75,7 @@ public class ${table.entityName}Controller {
     }
 
 
-
+    @RequiresPermissions("bg:${strutil.toLowerCase(table.entityName)}")
     @GetMapping
     @ApiOperation("${table.entityName}分页查询列表")
     public Result list(<%for(item in table.columnModels){%><%if(item.isChoose){%>@ApiParam(value = "${item.remarks}")@RequestParam(name = "${item.columnNameLowerCamel}",defaultValue = "") ${item.javaType} ${item.columnNameLowerCamel},<%}}%>

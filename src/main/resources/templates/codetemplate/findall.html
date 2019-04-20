@@ -30,6 +30,50 @@
     <script charset="utf-8" src="${ctxPath}/kindeditor-4.1.10/kindeditor.js"></script>
     <style>.weui_btn_dialog.default{display: none;}</style>
     <%}%>
+
+    <script type="text/javascript">
+        function checkall(){
+            $(".check").prop("checked",$(".checkall").prop("checked"));
+        }
+
+        function modifyMethod(){
+            var count=0;
+            var courseId="";
+            $(".check").each(function(){
+                if($(this).prop("checked")){
+                    courseId=$(this).val();
+                    count++;
+                }
+            })
+            if(count==0||count>1){
+                alert("请选择一条数据");
+                return false;
+            }
+            vm.modify(courseId);
+        }
+
+
+
+        function delMethod(){
+            var count=0;
+            var checkId="";
+            $(".check").each(function(){
+                if($(this).prop("checked")){
+                    if(checkId==""){
+                        checkId=$(this).val();
+                    }else{
+                        checkId+=","+$(this).val();
+                    }
+                    count++;
+                }
+            })
+            if(count==0){
+                alert("请选择数据");
+                return false;
+            }
+            vm.deldata(checkId);
+        }
+    </script>
 </head>
 <body>
 <!--头部 开始-->
@@ -39,9 +83,7 @@ ${includetop}
     ${includeleft}
     <div class="content">
         <h4>列表查询<i></i></h4>
-        <div class="btn">
-            <a href="javascript:void(0)" @click="modify()">新增信息</a>
-
+        <div class="topsearch">
             <%for(item in table.columnModels){%>
             <%if(item.isChoose){%>
             <%searchtype=1;%>
@@ -54,15 +96,25 @@ ${includetop}
             <%}%>
         </div>
 
+
+        <div class="topsearch">
+            <a href="javascript:void(0)" @click="modify()">新增信息</a>
+            <a href="javascript:void(0)" onclick="modifyMethod()">编辑</a>
+            <a href="javascript:void(0)" onclick="delMethod()">删除</a>
+        </div>
+
+
         <table class="tt">
             <thead>
             <tr>
+                <th width="3%">序号</th>
+                <th width="3%"><input type="checkbox" class="checkall" onclick="checkall()">全选</th>
                 <%for(item in table.columnModels){%>
                 <%if(!item.isKey&&strutil.toLowerCase(item.typeName)!="text"){%>
                 <th width="${100/(itemLP.size+1)}%">${item.remarks}</th>
                 <%}%>
                 <%}%>
-                <th width="${100/(table.columnModels.~size+1)}%">操作</th>
+                <!--<th width="${100/(table.columnModels.~size+1)}%">操作</th>-->
             </tr>
             </thead>
 
@@ -73,6 +125,8 @@ ${includetop}
             </tr>
 
             <tr v-for="(item,index) in list">
+                <td>{{ index+1 }}</td>
+                <td><input type="checkbox" class="check" :value="item.${table.columnModels[0].columnNameLowerCamel}"></td>
                 <%for(item in table.columnModels){%>
                 <%if(!item.isKey&&strutil.toLowerCase(item.typeName)!="text"){%>
                 <%if(item.javaType=="Date"){%>
@@ -84,10 +138,10 @@ ${includetop}
                 <%}%>
                 <%}%>
                 <%}%>
-                <td>
+                <!--<td>
                     <a class="del" href="javascript:void(0)" @click="modify(item.${table.columnModels[0].columnNameLowerCamel})">编辑</a>
                     <a class="del" href="javascript:void(0)" @click="deldata(item.${table.columnModels[0].columnNameLowerCamel})" >删除</a>
-                </td>
+                </td>-->
             </tr>
             </tbody>
         </table>
@@ -105,10 +159,9 @@ ${includetop}
         <div style="text-align: right" @click="dighide"><img src="${ctxPath}/backresourse/images/close_2.png" alt=""></div>
         <%for(item in table.columnModels){%>
 
-        <%if(!item.isKey){%>
-
+        <%if(!item.isKey&&item.columnNameLowerCamel!="addtime"){%>
         <%if(item.javaType=="Date"){%>
-        <p class="p2"><span>${item.remarks}</span><input type="text" v-model="obj.${item.columnNameLowerCamel}"/></p>
+        <p class="p2"><span>${item.remarks}</span><input type="text" id="${item.columnNameLowerCamel}" readonly="readonly"/></p>
         <%}else if(item.javaType=="Integer"){%>
         <p class="p2"><span>${item.remarks}</span><input type="number" v-model.number="obj.${item.columnNameLowerCamel}"/></p>
         <%}else if(strutil.toLowerCase(item.typeName)=="text"){%>
@@ -166,7 +219,10 @@ ${includetop}
         <%}%>
         <%if(item.javaType=="Date"){%>
         if(dig.obj.${item.columnNameLowerCamel}!=null){
-            dig.obj.${item.columnNameLowerCamel}=new Date(dig.obj.${item.columnNameLowerCamel});
+            dig.obj.${item.columnNameLowerCamel}=new Date($("#${item.columnNameLowerCamel}").val()).format("yyyy-MM-dd hh:mm:ss");
+            //dig.obj.${item.columnNameLowerCamel}=new Date(dig.obj.${item.columnNameLowerCamel});
+        }else{
+            dig.obj.${item.columnNameLowerCamel}=null;
         }
         <%}%>
         <%}%>
@@ -224,6 +280,20 @@ ${includetop}
                 this.sync()
             }
         });
+    <%}%>
+    <%for(item in table.columnModels){%>
+        <%if(item.javaType=="Date"&&item.columnNameLowerCamel!="addtime"){%>
+                if(dig.obj.${item.columnNameLowerCamel}!=null){
+                    $("#${item.columnNameLowerCamel}").val(new Date(dig.obj.${item.columnNameLowerCamel}).format("yyyy-MM-dd hh:mm:ss"));
+                }
+                laydate.render({
+                    elem: '#${item.columnNameLowerCamel}',
+                    type: 'datetime',
+                    choose: function (date) {
+                        $("#${item.columnNameLowerCamel}").val(date);
+                    }
+                });
+        <%}%>
     <%}%>
     }
 </script>
