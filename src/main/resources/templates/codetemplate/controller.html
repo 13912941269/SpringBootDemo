@@ -8,7 +8,6 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
-import io.swagger.annotations.*;
 import tk.mybatis.mapper.entity.Condition;
 import tk.mybatis.mapper.entity.Example;
 import org.apache.commons.lang.StringUtils;
@@ -27,9 +26,12 @@ public class ${table.entityName}Controller {
     @Autowired
     private ${table.entityName}Service ${table.entityName}Service;
 
+
+
+
+
     @RequiresPermissions("bg:${strutil.toLowerCase(table.entityName)}")
     @PostMapping
-    @ApiOperation("添加${table.entityName}")
     public Result add(${table.entityName} ${table.entityName}) {
         ${table.entityName}Service.save(${table.entityName});
         return ResultGenerator.genSuccessResult();
@@ -60,7 +62,6 @@ public class ${table.entityName}Controller {
 
     @RequiresPermissions("bg:${strutil.toLowerCase(table.entityName)}")
     @PutMapping("/{id:\\d+}")
-    @ApiOperation("修改${table.entityName}")
     public Result update(${table.entityName} ${table.entityName}) {
         ${table.entityName}Service.update(${table.entityName});
         return ResultGenerator.genSuccessResult();
@@ -68,8 +69,7 @@ public class ${table.entityName}Controller {
 
     @RequiresPermissions("bg:${strutil.toLowerCase(table.entityName)}")
     @GetMapping("/{id:\\d+}")
-    @ApiOperation("${table.entityName}根据id查询详情")
-    public Result detail(@ApiParam(value = "${table.remarks}id")@PathVariable Integer id) {
+    public Result detail(@PathVariable Integer id) {
         ${table.entityName} ${table.entityName} = ${table.entityName}Service.findById(id);
         return ResultGenerator.genSuccessResult(${table.entityName});
     }
@@ -77,10 +77,9 @@ public class ${table.entityName}Controller {
 
     @RequiresPermissions("bg:${strutil.toLowerCase(table.entityName)}")
     @GetMapping
-    @ApiOperation("${table.entityName}分页查询列表")
     public Result list(<%for(item in table.columnModels){%><%if(item.isChoose){%>@ApiParam(value = "${item.remarks}")@RequestParam(name = "${item.columnNameLowerCamel}",defaultValue = "") ${item.javaType} ${item.columnNameLowerCamel},<%}}%>
-                        @ApiParam(value = "页数")@RequestParam(name = "page",defaultValue = "1") Integer page,
-                        @ApiParam(value = "每页行数")@RequestParam(name = "size",defaultValue = "10") Integer size) {
+                        @RequestParam(name = "page",defaultValue = "1") Integer page,
+                        @RequestParam(name = "size",defaultValue = "10") Integer size) {
         PageHelper.startPage(page, size);
         Condition condition=new Condition(${table.entityName}.class);
         Example.Criteria criteria = condition.createCriteria();

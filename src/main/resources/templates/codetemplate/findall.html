@@ -15,6 +15,7 @@
     <script type="text/javascript" src="${ctxPath}/backresourse/js/pagination.js"></script>
     <script type="text/javascript" src="${ctxPath}/backresourse/js/vue.min.js"></script>
     <script type="text/javascript" src="${ctxPath}/backresourse/js/vue-resource.min.js"></script>
+    <script src="${ctxPath}/laydate/laydate.js"></script>
     <%var imgtype=0;%>
     <%for(item in table.columnModels){%>
     <%if(strutil.contain(strutil.toLowerCase(item.columnNameLowerCamel),"img")){imgtype=1;}%>
@@ -219,11 +220,11 @@ ${includetop}
         <%}%>
         <%if(item.javaType=="Date"){%>
         if(dig.obj.${item.columnNameLowerCamel}!=null){
-            dig.obj.${item.columnNameLowerCamel}=new Date($("#${item.columnNameLowerCamel}").val()).format("yyyy-MM-dd hh:mm:ss");
-            //dig.obj.${item.columnNameLowerCamel}=new Date(dig.obj.${item.columnNameLowerCamel});
+            dig.obj.${item.columnNameLowerCamel}=new Date(dig.obj.${item.columnNameLowerCamel});
         }else{
             dig.obj.${item.columnNameLowerCamel}=null;
         }
+        dig.obj.${item.columnNameLowerCamel}=new Date($("#${item.columnNameLowerCamel}").val()).format("yyyy-MM-dd hh:mm:ss");
         <%}%>
         <%}%>
         <%for(item in table.columnModels){%>
