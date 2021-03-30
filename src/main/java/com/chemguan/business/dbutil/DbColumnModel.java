@@ -14,29 +14,54 @@ import java.sql.SQLException;
 public class DbColumnModel implements Serializable {
     private static final long serialVersionUID = -7808860348918160912L;
 
+    /**
+     * 列名
+     */
+    private String colName;
 
-    public DbColumnModel() {
-    }
+    /**
+     * 类型名称
+     */
+    private String typeName;
 
-    private String colName;  //列名
+    /**
+     * 类型名称
+     */
+    private String typeNameUpper;
 
-    private String typeName; //类型名称
-
-    private String typeNameUpper; //类型名称
-
+    /**
+     * 备注
+     */
     private String remarks;
 
-    private int precision, isNull, dataType, scale; //精度,是否为空,类型,小数的位数
+    /**
+     * 精度,是否为空,类型,小数的位数
+     */
+    private int precision, isNull, dataType, scale;
 
-    private boolean isKey = false;  //是否为主键
+    /**
+     * 是否为主键
+     */
+    private boolean isKey = false;
+
 
     private boolean isChoose = false;  //是否为主键
 
-    private String columnNameLowerCamel;  //列名转化为小写驼峰式
+    /**
+     * 列名转化为小写驼峰式
+     */
+    private String columnNameLowerCamel;
 
-    private String columnNameUpperCamel;  //列名转化为大写驼峰式
 
-    private String javaType;  //数据库属性名转化为java属性名
+    /**
+     * 列名转化为大写驼峰式
+     */
+    private String columnNameUpperCamel;
+
+    /**
+     * 数据库属性名转化为java属性名
+     */
+    private String javaType;
 
     public String getJavaType() {
         String typeNamel = typeName.toLowerCase();

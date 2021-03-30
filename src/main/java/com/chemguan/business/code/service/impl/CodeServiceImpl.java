@@ -32,9 +32,12 @@ import java.util.*;
 public class CodeServiceImpl implements CodeService {
     private static final long serialVersionUID = -3827321264317955429L;
 
-    private static final String projectBasePath="/Users/shiwei/史伟文件夹/项目代码/AutoCodeFrame/src/main/java";
+    private static final String projectBasePath="/Users/shiwei/史伟文件夹/项目代码/AutoCodeFrameTwo/src/main/java";
 
-    private static final String templateBasePath="/Users/shiwei/史伟文件夹/项目代码/AutoCodeFrame/src/main/resources/templates";
+    private static final String xmlBasePath="/Users/shiwei/史伟文件夹/项目代码/AutoCodeFrameTwo/src/main/resources";
+
+
+    private static final String templateBasePath="/Users/shiwei/史伟文件夹/项目代码/AutoCodeFrameTwo/src/main/resources/templates";
 
     @Autowired
     private FamilyDbUtils familyDbUtils;
@@ -210,9 +213,9 @@ public class CodeServiceImpl implements CodeService {
             templateRoot= new HashMap<String, Object>();
             templateRoot.put("table",dbTableModel);
             templateRoot.put("ctxPath","${ctxPath}");
-            templateRoot.put("includetop","<%layout(\"include/top.html\"){}%>");
-            templateRoot.put("includeleft","<%layout(\"include/left.html\"){}%>");
-            templateRoot.put("pageview","<%layout(\"include/pageviewnow.html\"){}%>");
+            templateRoot.put("includetop","<%layout(\"../include/top.html\"){}%>");
+            templateRoot.put("includeleft","<%layout(\"../include/left.html\"){}%>");
+            templateRoot.put("pageview","<%layout(\"../include/pageviewnow.html\"){}%>");
 
             String newPath = dirPath;
 
@@ -273,38 +276,44 @@ public class CodeServiceImpl implements CodeService {
         //目标文件
         File file = null;
         FileWriter out = null;
-        if (suffix.equals("Repository"))
+        if (suffix.equals("Repository")){
             dirFile = new File(dirPath + File.separator + "dao");
-        else if (suffix.equals("ServiceImpl"))
+        }else if (suffix.equals("ServiceImpl")){
             dirFile = new File(dirPath + File.separator + "service" + File.separator + "impl");
-        else if(suffix.equals("findall")||suffix.equals("modify"))
+        }else if(suffix.equals("findall")||suffix.equals("modify")){
             dirFile = new File(dirPath);
-        else
+        }else{
             dirFile = new File(dirPath + File.separator + suffix.toLowerCase());
+        }
+
         //不存在 创建文件夹
-        if (!dirFile.exists())
+        if (!dirFile.exists()&&!suffix.equals("Mapper")){
             dirFile.mkdirs();
-
-
-
-        if (suffix.equals("Repository"))
+        }
+        if (suffix.equals("Repository")){
             file = new File(dirPath + File.separator + "dao" +
                     File.separator + dbTableModel.getEntityName() + suffix + ".java");
-        else if (suffix.equals("ServiceImpl"))
+        } else if (suffix.equals("ServiceImpl")){
             file = new File(dirPath + File.separator + "service" + File.separator + "impl" +
                     File.separator + dbTableModel.getEntityName() + suffix + ".java");
-        else if (suffix.equals("Entity"))
+        } else if (suffix.equals("Entity")){
             file = new File(dirPath + File.separator + suffix.toLowerCase() +
                     File.separator + dbTableModel.getEntityName() + ".java");
-        else if (suffix.equals("Mapper"))
-            file = new File(dirPath + File.separator + suffix.toLowerCase() +
+        } else if (suffix.equals("Mapper")){
+            file = new File(xmlBasePath + File.separator + suffix.toLowerCase() +
                     File.separator + dbTableModel.getEntityName() + suffix + ".xml");
-        else if (suffix.equals("findall"))
+        } else if (suffix.equals("findall")){
+            File sourceFile = new File(dirPath + File.separator +dbTableModel.getEntityNameLowcase());
+            if (!sourceFile.exists()){
+                sourceFile.mkdirs();
+            }
             file = new File(dirPath + File.separator +
-                    dbTableModel.getEntityNameLowcase() +suffix.toLowerCase() + ".html");
-        else
+                    dbTableModel.getEntityNameLowcase()+File.separator + "index.html");
+        } else{
             file = new File(dirPath + File.separator + suffix.toLowerCase() +
                     File.separator + dbTableModel.getEntityName() + suffix + ".java");
+        }
+
         try {
             out = new FileWriter(file);
             ClasspathResourceLoader resourceLoader = new ClasspathResourceLoader("templates/codetemplate/");

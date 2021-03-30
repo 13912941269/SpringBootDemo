@@ -1,16 +1,17 @@
 package ${basePackage}.controller;
+
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import ${corePackage}.results.Result;
 import ${corePackage}.results.ResultGenerator;
 import ${basePackage}.entity.${table.entityName};
-import ${basePackage}.service.${table.entityName}Service;
+import ${basePackage}.dao.${table.entityName}Repository;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
-import tk.mybatis.mapper.entity.Condition;
-import tk.mybatis.mapper.entity.Example;
-import org.apache.commons.lang.StringUtils;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -23,8 +24,10 @@ import java.util.List;
 @RestController
 @RequestMapping("${table.mappingPath}")
 public class ${table.entityName}Controller {
+
+
     @Autowired
-    private ${table.entityName}Service ${table.entityName}Service;
+    private ${table.entityName}Repository ${table.entityNameFirstLow}Repository;
 
 
 
@@ -32,8 +35,8 @@ public class ${table.entityName}Controller {
 
     @RequiresPermissions("bg:${strutil.toLowerCase(table.entityName)}")
     @PostMapping
-    public Result add(${table.entityName} ${table.entityName}) {
-        ${table.entityName}Service.save(${table.entityName});
+    public Result add(${table.entityName} ${table.entityNameFirstLow}) {
+        ${table.entityNameFirstLow}Repository.insert(${table.entityNameFirstLow});
         return ResultGenerator.genSuccessResult();
     }
 
@@ -51,7 +54,7 @@ public class ${table.entityName}Controller {
             return ResultGenerator.genFailResult("数据为空!");
         }
         try{
-            ${table.entityName}Service.deleteByIds(checkIds);
+            ${table.entityNameFirstLow}Repository.deleteBatchIds(Arrays.asList(checkIds.split(",")));
         }catch (Exception e){
             return ResultGenerator.genFailResult("所选数据已被关联无法删除");
         }
@@ -62,16 +65,16 @@ public class ${table.entityName}Controller {
 
     @RequiresPermissions("bg:${strutil.toLowerCase(table.entityName)}")
     @PutMapping("/{id:\\d+}")
-    public Result update(${table.entityName} ${table.entityName}) {
-        ${table.entityName}Service.update(${table.entityName});
+    public Result update(${table.entityName} ${table.entityNameFirstLow}) {
+        ${table.entityNameFirstLow}Repository.updateById(${table.entityNameFirstLow});
         return ResultGenerator.genSuccessResult();
     }
 
     @RequiresPermissions("bg:${strutil.toLowerCase(table.entityName)}")
     @GetMapping("/{id:\\d+}")
     public Result detail(@PathVariable Integer id) {
-        ${table.entityName} ${table.entityName} = ${table.entityName}Service.findById(id);
-        return ResultGenerator.genSuccessResult(${table.entityName});
+        ${table.entityName} ${table.entityNameFirstLow} = ${table.entityNameFirstLow}Repository.selectById(id);
+        return ResultGenerator.genSuccessResult(${table.entityNameFirstLow});
     }
 
 
@@ -81,17 +84,17 @@ public class ${table.entityName}Controller {
                         @RequestParam(name = "page",defaultValue = "1") Integer page,
                         @RequestParam(name = "size",defaultValue = "10") Integer size) {
         PageHelper.startPage(page, size);
-        Condition condition=new Condition(${table.entityName}.class);
-        Example.Criteria criteria = condition.createCriteria();
+
+        QueryWrapper<${table.entityName}> wapper = new QueryWrapper<>();
         <%for(item in table.columnModels){%>
         <%if(item.isChoose){%>
         <%if(item.javaType=="String"){%>
         if(StringUtils.isNotEmpty(${item.columnNameLowerCamel})){
-            criteria.andLike("${item.columnNameLowerCamel}","%"+${item.columnNameLowerCamel}+"%");
+            wapper.like("${item.columnNameLowerCamel}",${item.columnNameLowerCamel});
         }
         <%}else{%>
         <%}}}%>
-        List<${table.entityName}> list = ${table.entityName}Service.findByCondition(condition);
+        List<${table.entityName}> list = ${table.entityNameFirstLow}Repository.selectList(wapper);
         PageInfo pageInfo = new PageInfo(list);
         return ResultGenerator.genSuccessResult(pageInfo);
     }

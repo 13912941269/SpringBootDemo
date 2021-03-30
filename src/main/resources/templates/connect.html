@@ -3,16 +3,16 @@
     <title>代码生成</title>
 </head>
 <body>
-ip:<input type="text" id="ip" /><br></br>
+ip:<input type="text" id="ip" value="192.168.1.10"/><br></br>
 db:<select id="db">
-    <option value="1">mysql</option>
+    <option value="1" selected="selected">mysql</option>
     <option value="2">oracle</option>
     <option value="3">sqlserver</option>
 </select><br></br>
-port:<input type="text" id="port" /><br></br>
+port:<input type="text" id="port" value="3306"/><br></br>
 dbName:<input type="text" id="dbName" /><br></br>
-username:<input type="text" id="username" /><br></br>
-password:<input type="text" id="password" /><br></br>
+username:<input type="text" id="username" value="root"/><br></br>
+password:<input type="text" id="password" value="123456"/><br></br>
 <button onclick="connect()">连接</button>
 <hr/>
 <div id="tableDiv">
@@ -21,6 +21,6 @@ password:<input type="text" id="password" /><br></br>
 </div>
 <button onclick="generate()">生成</button>
 <script src="${ctxPath}/backresourse/js/jquery-1.9.1.min.js"></script>
-<script src="${ctxPath}/connect.js"></script>
+<script src="${ctxPath}/connect.js?v=2"></script>
 </body>
 </html>

@@ -2,6 +2,7 @@ package com.chemguan.business.code.model;
 
 
 import com.chemguan.business.dbutil.DbModel;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import java.io.Serializable;
 
@@ -24,6 +25,7 @@ public class CodeSchema implements Serializable {
 
     private String username;
 
+    @JsonProperty("password")
     private String password;
 
     private String port;

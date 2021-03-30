@@ -1,16 +1,20 @@
 package ${basePackage}.entity;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
-import javax.persistence.*;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.format.annotation.DateTimeFormat;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+
 
 /**
  * @Title: ${table.entityName}
@@ -19,23 +23,23 @@ import org.springframework.format.annotation.DateTimeFormat;
  * @author ${author}
  * @date ${date()}
  */
-@Entity
 @Data
-@Table(name = "${table.tableName}")
-@NoArgsConstructor
-@AllArgsConstructor
+@TableName("${table.tableName}")
 public class ${table.entityName}  implements Serializable{
 
     <%for(item in table.columnModels){%>
+
     /** ${item.remarks} */
     <%if(item.isKey){%>
-    @Id
+    @TableId(type = IdType.AUTO)
     <%}%>
     <%if(item.javaType=="Date"){%>
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     <%}%>
+    @JsonProperty
     private ${item.javaType} ${item.columnNameLowerCamel};
+
     <%}%>
 
 }

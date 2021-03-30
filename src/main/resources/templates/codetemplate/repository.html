@@ -1,7 +1,8 @@
 package ${basePackage}.dao;
 
-import ${corePackage}.mapper.Mapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import ${basePackage}.entity.${table.entityName};
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * @Title: ${table.entityName}Repository
@@ -10,8 +11,8 @@ import ${basePackage}.entity.${table.entityName};
  * @author ${author}
  * @date ${date()}
  */
-@org.apache.ibatis.annotations.Mapper
-public interface ${table.entityName}Repository extends Mapper<${table.entityName}> {
+@Mapper
+public interface ${table.entityName}Repository extends BaseMapper<${table.entityName}> {
 
 }
 

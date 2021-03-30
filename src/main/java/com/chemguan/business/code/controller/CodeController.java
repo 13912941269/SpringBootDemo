@@ -49,6 +49,7 @@ public class CodeController {
     @RequestMapping(value = "constructCode")
     @ResponseBody
     public void constructCode(CodeSchema codeSchema, HttpServletResponse response) throws Exception {
+        System.out.println(codeSchema);
         //ServletOutputStream out = null;
         //InputStream fin = null;
         //File file = null;

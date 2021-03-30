@@ -1,8 +1,7 @@
 package ${basePackage!}.service;
-import ${basePackage!}.entity.${table.entityName!};
-import ${corePackage!}.service.Service;
 
-
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.chemguan.entity.${table.entityName!};
 /**
  * @Title: ${table.entityName!}Service
  * @ProjectName
@@ -10,6 +9,6 @@ import ${corePackage!}.service.Service;
  * @author ${author}
  * @date ${date()}
  */
-public interface ${table.entityName!}Service extends Service<${table.entityName!}> {
+public interface ${table.entityName!}Service extends IService<${table.entityName!}> {
 
 }

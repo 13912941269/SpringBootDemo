@@ -62,6 +62,6 @@ function generate() {
         alert("您没有选择任何数据");
     } else {
         alert(str);
-        window.location.href = './code/constructCode?ip=' + $('#ip').val() + '&db=' + $('#db').val() + '&port=' + $('#port').val() + '&dbName=' + $('#dbName').val() + '&username=' + $('#username').val() + '&password=' + $('#password').val() + '&tables=' + str + '&basePackage=' + $('#basepackage').val()+'&author='+$('#author').val();
+        window.location.href = './code/constructCode?ip=' + $('#ip').val() + '&db=' + $('#db').val() + '&port=' + $('#port').val() + '&dbName=' + $('#dbName').val() + '&username=' + $('#username').val() + '&password=' + encodeURIComponent($('#password').val()) + '&tables=' + str + '&basePackage=' + $('#basepackage').val()+'&author='+$('#author').val();
     }
 }
